@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+
+    laravel-app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: laravel-app
+        restart: unless-stopped
+        tty: true
+        volumes:
+            - .:/var/www/toDoApp:delegated
+            - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - toDoAppNetwork
+
+    nginx:
+        image: nginx:alpine
+        container_name: nginx
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "8081:80"
+        volumes:
+            - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+            - .:/var/www/toDoApp:delegated
+        depends_on:
+            - laravel-app
+        networks:
+            - toDoAppNetwork
+
+    mysql:
+        container_name: db
+        restart: always
+        image: mysql:8.0
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_DATABASE: toDoApp
+            MYSQL_USER: 'user'
+            MYSQL_PASS: 'secret'
+        volumes:
+            - db_data:/var/lib/mysql
+        networks:
+            - toDoAppNetwork
+
+volumes:
+    db_data:
+        driver: local
+networks:
+    toDoAppNetwork:
+        driver: bridge
