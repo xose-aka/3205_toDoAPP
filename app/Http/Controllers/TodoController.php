@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\TodoResource;
+use App\Models\Language;
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class TodoController extends BaseController
@@ -15,7 +17,18 @@ class TodoController extends BaseController
     public function index()
     {
         return Inertia::render('Todo/Index', [
-            'todos' => TodoResource::collection(Todo::all())->resolve(),
+            'todos' => TodoResource::collection(Todo::query()->has('getTranslation')->get())->resolve(),
+            'availableLanguages' => Language::all(),
+            'currentLocale' => Session::get('locale', app()->getLocale()),
+        ]);
+    }
+
+
+    public function about()
+    {
+        return Inertia::render('About/Index', [
+            'availableLanguages' => Language::all(),
+            'currentLocale' => Session::get('locale', app()->getLocale()),
         ]);
     }
 

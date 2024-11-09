@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\TodoTranslation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,9 +18,12 @@ class ToDoFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
             'is_completed' => $this->faker->boolean,
         ];
+    }
+
+    public function withTodoTranslation(array $profileData = [])
+    {
+        return $this->has(TodoTranslation::factory()->state($profileData));
     }
 }

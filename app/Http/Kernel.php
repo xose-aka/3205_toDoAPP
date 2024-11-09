@@ -40,6 +40,9 @@ class Kernel extends HttpKernel
 
             // delay every fifth request
             \App\Http\Middleware\DelayEveryFifthRequest::class,
+
+            \App\Http\Middleware\LanguageSet::class,
+            \App\Http\Middleware\RedirectRootToLocal::class,
         ],
 
         'api' => [

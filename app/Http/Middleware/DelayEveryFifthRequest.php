@@ -30,7 +30,7 @@ class DelayEveryFifthRequest
         // Check if it's every fifth request
         if ($requestCount % 5 === 0) {
             // Add a 5-second delay for every fifth request
-            sleep(5);
+//            sleep(5);
         }
 
         return $next($request);

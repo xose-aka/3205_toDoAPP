@@ -17,10 +17,11 @@ class TodoResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
+            'title' => is_null($this->getTranslation) ?  '' : $this->getTranslation->title ,
+            'description' => is_null($this->getTranslation) ?  '' : $this->getTranslation->description ,
             'isCompleted' => $this->is_compleed,
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),

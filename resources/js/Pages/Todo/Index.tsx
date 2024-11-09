@@ -14,17 +14,19 @@ interface Todo {
 
 interface Props {
     todos: Todo[];
+    availableLanguages: any[];
+    currentLocale: string;
 }
 
-const Index: React.FC<Props> = ({ todos }) => {
+const Index: React.FC<Props> = ({ todos, availableLanguages, currentLocale }) => {
     console.log(todos)
     return (
-        <AppLayout>
+        <AppLayout availableLanguages={availableLanguages} currentLocale={currentLocale}>
             <div>
                 <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-4xl ">
                     ToDo List</h1>
                 <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"/>
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                         {todos.map(todo => (
 
                             <div key={todo.id} className="max-w-sm rounded overflow-hidden shadow-lg">

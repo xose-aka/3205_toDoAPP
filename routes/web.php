@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,4 +16,14 @@ use Inertia\Inertia;
 |
 */
 
-Route::resource('/', TodoController::class);
+Route::get('/change-language/{locale}', [LanguageController::class, 'changeLanguage'])->name('change-language');
+
+Route::get('/', function () {
+    return redirect()->route('todos.index');
+});
+
+//Route::prefix('{locale}')->group(function () {
+    Route::resource('/todos', TodoController::class);
+
+    Route::get('/about', [TodoController::class, 'about']);
+//});

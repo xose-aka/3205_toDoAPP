@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Language;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class BaseController extends Controller
 {
     public function __construct()
     {
-        // Share session data globally for all views
-        Inertia::share([
-            'session' => function () {
-                return session()->all(); // Share all session data
-            },
-        ]);
+//        $locale = Session::get('locale', app()->getLocale());
+//
+//        Inertia::share([
+//            'availableLanguages' => Language::all(), // assuming a Language model
+//            'currentLocale' => $locale,
+//        ]);
     }
+
 }

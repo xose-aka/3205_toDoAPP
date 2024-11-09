@@ -6,7 +6,6 @@ import { createInertiaApp } from "@inertiajs/inertia-react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import axios from "axios";
 
-axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
 createInertiaApp({
     resolve: (name) =>

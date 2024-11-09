@@ -1,7 +1,7 @@
 # use PHP 8.2
 FROM php:8.2-fpm
 
-COPY composer.lock composer.json /var/www/toDoApp/
+#COPY composer.lock composer.json /var/www/toDoApp/
 
 WORKDIR /var/www/toDoApp
 
@@ -30,6 +30,9 @@ RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
 RUN docker-php-ext-configure gd --with-external-gd
 RUN docker-php-ext-install gd
 
+# Install MongoDB extension
+RUN pecl install mongodb \
+    && docker-php-ext-enable mongodb
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -41,6 +44,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Copy existing application directory contents
 COPY . /var/www/toDoApp
 
+RUN composer clear-cache
+RUN composer install
+
 # Copy existing application directory permissions
 COPY --chown=www-data:www-data . /var/www/toDoApp
 
@@ -50,7 +56,11 @@ RUN chmod -R 775 /var/www/toDoApp/storage /var/www/toDoApp/bootstrap
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs=20.10.0-1nodesource1
 
+RUN php artisan migrate
+RUN php artisan db:seed
+
 RUN npm install
+RUN npm run dev
 
 # Change current user to www
 #USER www
