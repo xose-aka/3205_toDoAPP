@@ -60,7 +60,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 #RUN php artisan db:seed
 
 RUN npm install
-RUN npm run dev
+RUN npm run build
 
 # Change current user to www
 #USER www
