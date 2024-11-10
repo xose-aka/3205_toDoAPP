@@ -28,6 +28,12 @@ docker exec -it laravel-app php artisan migrate
 docker exec -it laravel-app php artisan db:seed
 ```
 
+## Run app
+
+```
+    localhost:8081
+```
+
 ## Tasks done
 
 - README.md and About pages returns `X-Robots-tag: noindex` with `noindex` middleware
