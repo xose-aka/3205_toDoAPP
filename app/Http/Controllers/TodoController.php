@@ -32,6 +32,11 @@ class TodoController extends BaseController
         ]);
     }
 
+    public function apiTodos()
+    {
+        return TodoResource::collection(Todo::query()->has('getTranslation')->get())->resolve();
+    }
+
     /**
      * Show the form for creating a new resource.
      */

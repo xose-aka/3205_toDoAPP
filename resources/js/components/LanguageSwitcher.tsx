@@ -3,7 +3,6 @@ import { Inertia } from '@inertiajs/inertia';
 
 const LanguageSwitcher = ({ availableLanguages, currentLocale }) => {
 
-    console.log(currentLocale);
     const handleLanguageChange = (e) => {
         const selectedLocale = e.target.value;
         console.log(selectedLocale);

@@ -23,12 +23,29 @@ class LanguageController extends BaseController
         // Check if the language exists in the languages table
         if (in_array($locale, $availableLanguages)) { // add other languages as needed
             Session::put('locale', $locale);
-            \app()->setLocale($locale);
+            app()->setLocale($locale);
 
-            $language = Language::query()->where('code', $locale)->first();
+            // Get the previous URL and replace the locale prefix
+            $previousUrl = url()->previous();
+            $parsedUrl = parse_url($previousUrl);
 
-            if (!is_null($language))
-                session()->put('language_id', $language->id);
+            // Extract the path from the previous URL
+            $path = isset($parsedUrl['path']) ? $parsedUrl['path'] : '/';
+
+            // Remove the old locale from the URL path if present
+            $segments = array_filter(explode('/', $path));
+            if (in_array($segments[1] ?? '', $availableLanguages)) {
+                array_shift($segments); // Remove the first segment if it's a locale
+            }
+
+            // Prepend the new locale to the segments
+            array_unshift($segments, $locale);
+
+            // Build the new URL with the locale prefix
+            $newUrl = url(implode('/', $segments));
+
+            // Redirect to the new URL
+            return Redirect::to($newUrl);
         }
 
         return Redirect::back();

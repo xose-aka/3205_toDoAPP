@@ -56,8 +56,8 @@ RUN chmod -R 775 /var/www/toDoApp/storage /var/www/toDoApp/bootstrap
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs=20.10.0-1nodesource1
 
-RUN php artisan migrate
-RUN php artisan db:seed
+#RUN php artisan migrate
+#RUN php artisan db:seed
 
 RUN npm install
 RUN npm run dev

@@ -18,6 +18,28 @@ class LanguageSet
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $localePrefix = $request->segment(1);
+
+        $sessionLocale = Session::get('locale');
+
+        if (is_null($sessionLocale)) {
+            if (is_null($localePrefix)) {
+
+
+
+            } else {
+                $availableLanguages = Language::query()->pluck('code')->toArray();
+
+                if (in_array($localePrefix, $availableLanguages)) {
+                    Session::put('locale', $localePrefix);
+                    app()->setLocale($localePrefix);
+                }
+            }
+        } else {
+            app()->setLocale($sessionLocale);
+        }
+
+
 
 //        $locale = app()->getLocale();
 //

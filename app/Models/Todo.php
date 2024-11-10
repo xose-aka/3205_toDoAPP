@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Session;
 
 /**
  *
@@ -34,8 +35,15 @@ class Todo extends Model
      */
     public function getTranslation()
     {
-        /** @var Language $language */
-        $languageId = session('language_id', 0);
+        $locale = Session::get('locale', app()->getLocale());
+
+        $languageId = 0;
+
+        $language = Language::query()->where('code', $locale)->first();
+
+        if (!is_null($language)) {
+            $languageId = $language->id;
+        }
 
         return $this->hasOne(TodoTranslation::class)
             ->where('language_id', $languageId);  // Or any other condition;

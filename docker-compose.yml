@@ -10,10 +10,27 @@ services:
         restart: unless-stopped
         tty: true
         depends_on:
-            - mysql
+            - database
         volumes:
             - .:/var/www/toDoApp:delegated
             - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - toDoAppNetwork
+
+    database:
+        container_name: database
+#        restart: always
+        image: mysql:8.0
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_DATABASE: toDoApp
+            MYSQL_USER: 'user'
+            MYSQL_PASS: 'secret'
+        volumes:
+            - db_data:/var/lib/mysql
+#            - ./custom/my.cnf:/etc/mysql/my.cnf
         networks:
             - toDoAppNetwork
 
@@ -29,22 +46,6 @@ services:
             - .:/var/www/toDoApp:delegated
         depends_on:
             - laravel-app
-        networks:
-            - toDoAppNetwork
-
-    mysql:
-        container_name: db
-        restart: always
-        image: mysql:8.0
-        ports:
-            - "3306:3306"
-        environment:
-            MYSQL_ROOT_PASSWORD: 'root'
-            MYSQL_DATABASE: toDoApp
-            MYSQL_USER: 'user'
-            MYSQL_PASS: 'secret'
-        volumes:
-            - db_data:/var/lib/mysql
         networks:
             - toDoAppNetwork
 

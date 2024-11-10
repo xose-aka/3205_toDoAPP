@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $locale = app()->getLocale();
+//        dd(app()->getLocale());
 //        $language = Language::query()->where('code', $locale)->first();
 //
 //        if (!is_null($language))
